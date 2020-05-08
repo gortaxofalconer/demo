@@ -1,14 +1,18 @@
 import random as r, sys
 class Person:
     def __init__(self, name, species, job, origin,
-                 armor, hp, stren):
+                 hp, armor, weapon, stren, dex, moves):
         self._name = name
         self._species = species
         self._job = job
         self._origin = origin
         self._armor = armor
+        self._weapon = weapon
         self._hp = hp
         self._stren = stren
+        self._moves = moves
+        self._dex = dex
+        
     def name(self):
         return self._name
     def species(self):
@@ -21,21 +25,44 @@ class Person:
         return self._hp
     def armor(self):
         return self._armor
+    def weapon(self):
+        return self._weapon
     def stren(self):
         return self._stren
+    def dex(self):
+        return self._dex
+    def moves(self):
+        return self._moves
 
-Ben = Person("Ben", "human", "assassin", "Cornwall", armor=10,
-             hp=10, stren=r.randint(1,21))
-Alfred = Person("Alfred", "dwarf", "innkeep", "Devon", armor=r.randint(-1,1),
-                hp=r.randint(1,20), stren=14)
-def fight(person, val3):
-    val3 = ""
+def findattack(weapon, move, dex):
+    if dex <= 5:
+        move =.75*move
+    elif dex >=15:
+        move = 1.25*move
+    attack = weapon*move
+        
+
+Ben = Person("Ben", "human", "assassin", "Cornwall",
+             hp = 10, armor=10,
+             weapon = r.randint(1,8), stren=r.randint(1,20),
+             dex = r.randint(1,20),
+             moves=1,)
+
+Alfred = Person("Alfred", "dwarf", "innkeep", "Devon",
+                hp=r.randint(1,20), armor=r.randint(-1,1),
+                weapon = r.randint(1,20), stren=10,
+                dex=15,
+                moves=1)
+
+def fight(person, hp):
+    val3 = person.hp()
     #knockout function when enemy hp is 0 or less 
     def ko():
-        print(f"{person.name()} lies dead before you.\n"
+        print(f"{person.name()} the {person.species()} of {person.origin()} lies dead before you.\n"
               f"You were the monster all along.")
         sys.exit()
     #asks if you want to attack. if you do, - 1 amt target HP. if not u chill
+    #in the future it would run use attack (defined as (m*w)*dex
     def dmg(val3):
         ddval= ""
         answer = ""
@@ -61,8 +88,8 @@ def fight(person, val3):
         prompt(val3)
         if float(val) <= 0: ko()
     prompt(val3)
-h = ""
-fight(Ben, h)
+
+fight(Ben, Ben.hp())
 
 #    if person2.armor() >= person1.stren():
 #        print(f"{announcement}\nYour blow has no effect.")
