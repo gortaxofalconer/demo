@@ -20,11 +20,11 @@ gearlist = [namelen, joblen, alignlen, speclen, originlen]
 evilal = False
 goodal = False
 neutralal = False
-if "evil" in alignment.lower(): evilal = True
+if "evil" in alignment.casefold(): evilal = True
 else: pass
 if evilal == True: action_str = (f"Exploit the weaker")
 else: pass
-if "good" in alignment.lower(): goodal = True
+if "good" in alignment.casefold(): goodal = True
 else: pass
 if goodal == True: action_str = (f"Defend the weaker")
 else: neutralal = True
@@ -32,28 +32,28 @@ action_str = (f"Interact with the other")
 ####if user says they are a magic user they get mp and a wand
 magic_jobs = ['witch', 'wizard', 'mage', 'magician',
               'warlock','sorcerer', 'sorceress']
-if job.lower() in magic_jobs: mp = r.randint(10,20)
+if job.casefold() in magic_jobs: mp = r.randint(10,20)
 else: mp = r.randint(2,9) 
 hp = r.randint(10,20)
 #makin strangs
 main_str =(
     f"\nYou have created {name.title()} of {origin.title()}, the "
-    f"{alignment.lower()} {species.lower()} {job.lower()}.\nNow get out"
+    f"{alignment.casefold()} {species.casefold()} {job.casefold()}.\nNow get out"
     f" there & kill some goblins or rats or whatever!")
 rat_str = (
-    f"\nUnless you are a {species.lower()}, in which case: I'm so sorry."
-    f" Hope you can make some cheddar with your {job.lower()} skills.")
+    f"\nUnless you are a {species.casefold()}, in which case: I'm so sorry."
+    f" Hope you can make some cheddar with your {job.casefold()} skills.")
 goblin_str = (
-    f"\nUnless you are a {species.lower()}, in which case: I'm so sorry."
+    f"\nUnless you are a {species.casefold()}, in which case: I'm so sorry."
     f" Hope life isn't gobblin' you up.")
 #acknowledging magic
 if mp >= 10: alignstr = (
-    f"\n\nGo forth, {name.title()}! {action_str} {species.lower()}s of"
-    f" {origin.title()} using your magical {alignment.lower()} {job.lower()}"
+    f"\n\nGo forth, {name.title()}! {action_str} {species.casefold()}s of"
+    f" {origin.title()} using your magical {alignment.casefold()} {job.casefold()}"
     f" skills!")
 else: alignstr = (
-    f"\nGo forth, {name.title()}!\n{action_str} {species.lower()}s of "
-    f"{origin.title()} using your {alignment.lower()} {job.lower()} skills!")
+    f"\nGo forth, {name.title()}!\n{action_str} {species.casefold()}s of "
+    f"{origin.title()} using your {alignment.casefold()} {job.casefold()} skills!")
 #takes length of total inputs and sets money, weapons, armor
 def gear(inputlist):
     goldcount = s.mean(inputlist)
@@ -90,7 +90,7 @@ def attr():
     print(f"MP: {mp}\nHP: {hp}")
     #bard commentary
     if 15 <= charisma: print(
-        f"With charisma like that, you could be one of the {alignment.lower()}"
+        f"With charisma like that, you could be one of the {alignment.casefold()}"
         f" bards of {origin.title()}!")
     elif charisma == 5: print("Good luck out there! You'll need it!")
     else: pass
@@ -99,8 +99,8 @@ def attr():
     elif 15 <= const: hulk = True
     else: hulk = False
     if hulk == True: print(
-        f"With a frame like that, you could be the best {alignment.lower()}"
-        f"fighter in all of {origin.title()} !")
+        f"With a frame like that, you could be the best {alignment.casefold()}"
+        f" fighter in all of {origin.title()} !")
     elif (const or strength) == 5: print(
         f"You seem a little weak. Be careful out there!")
     else: pass
@@ -109,7 +109,7 @@ def attr():
     elif 15 <= wis: genius = True
     else: genius = False
     if genius == True: print( 
-        f"People with minds like yours tend to become {alignment.lower()}"
+        f"People with minds like yours tend to become {alignment.casefold()}"
         " spellcasters.")
     else: pass
     #simpleton commentary
@@ -121,42 +121,42 @@ def attr():
     else: pass
     #thief commentary
     if 15 <= dext <= 20: print(
-        f"Have you ever looked into {alignment.lower()} thievery?")
+        f"Have you ever looked into {alignment.casefold()} thievery?")
     else: pass
 #constructs and displays character intro
 def intro():
-    if "rat" == species.lower(): print(f"{main_str} {rat_str}")
-    elif "goblin" == species.lower(): print(f"{main_str} {goblin_str}")
+    if "rat" == species.casefold(): print(f"{main_str} {rat_str}")
+    elif "goblin" == species.casefold(): print(f"{main_str} {goblin_str}")
     else: print(f"{main_str} {alignstr}")
 #tavern stuff
 def tavern():
     move = ""
     #buying beer
     def buy(inputlist):
-        #trying to make an thing here to return to idle state
-        #prompt = (f"{prompt}")
-        #move += input(f"{prompt}\n")
         coppercount = sum(inputlist)
-        #if "fight" in move.lower(): fight()
-        #if "buy" in move.lower(): buy(gearlist)
-        #elif "talk" in move.lower(): talk(gearlist)
-        #elif "leave" in move.lower(): leave()
-        #else: tavern()
         answer = ""
         answer += input(
             f"You look at the innkeep, who doesn't even give you a "
             f"chance to speak. 'The sun is still up. Pints are still "
             f"ten coppers. Want one?'\n")
-        if "yes" in answer.lower(): print(
+        def deductcop(inputlist):
+            coppercount = sum(inputlist)
+            coppercount -= 10
+            print(
             f"'Alright then,' he says. You hand him the ten coppers and"
-            f" receive a pint. You now have {coppercount-10} coppers.")
+            f" receive a pint. You now have {coppercount} coppers and"
+            f" a pint of ale, which you drink all in one go. You hand the"
+            f" pint mug back to the amazed innkeeper, who takes it back"
+            f" without a word.")
+            tavern()  
+        if "y" in answer.casefold(): deductcop(inputlist)
         else: tavern()
     
     def brawl(): #fight(enemy)?
         print(f"Despite your armor and weaponry, you feel as though you"
               f" don't know enough 'pie-thon' to fight, whatever that "
               f"could mean. You find yourself remaining seated at your "
-              f"table.")
+              f"table. You hear a distant tapping and muttering...")
         tavern()
         #need combatant*(Spell/Wand/MP/INT&Weapon/STR/DEX: ATK,
         #     HP/CON/Armor/DEX: DEF)
@@ -183,7 +183,7 @@ def tavern():
                                 f"that much is true, sure and certain,'"
                                 f" the innkeeper says, as much to himself"
                                 f" as to you.")
-        elif "yes" in speak: print(f"The innkeeper watches as you take "
+        elif "y" in speak: print(f"The innkeeper watches as you take "
                                    f"one of your {silvercount} silver "
                                    f"pieces (now {silvercount-1}) from "
                                    f"your pouch and discreetly place it"
@@ -194,13 +194,14 @@ def tavern():
                                    f"were fake heroes around these parts"
                                    f" who'll give real silver for fake"
                                    f" gossip. How's that?'\nYou notice "
-                                   f"a certain hardness to the man you "
-                                   f"didn't before. How exactly did you"
-                                   f" end up at the Mothlight anyway?\n"
+                                   f"a certain hardness in the man's eyes"
+                                   f" you didn't before. How exactly did"
+                                   f" you end up at the Mothlight anyway?\n"
                                    f"Try as you might, you cannot recall.")
-        else: print(f"I'm going to take that as a no, city slicker. A "
+        
+        else: print(f"'I'm going to take that as a no, city slicker. A "
                     f"bit o'wisdom for ye: if I think ye wise, best not"
-                    f"act to change my stance.")
+                    f"act to change my stance.'")
         #      tavern() to exit? howmst?
         pass
     def leave(): print(f"You stand up and exit the inn. The sun is so "
@@ -209,16 +210,17 @@ def tavern():
                        f" total horror that you are being erased from"
                        f" existence. BYE!")
             
-    prompt = (f"Would you like to BUY something, start a BRAWL for money, try to TALK, or LEAVE?")
+    prompt = (f"Would you like to BUY something, start a BRAWL for money,"
+              f"try to TALK, or LEAVE?")
     move += input(f"You are sitting in the Mothlight, {origin.title()}'s "
                   f"finest inn.\n{prompt}\n")
-    if "brawl" in move.lower():
+    if "brawl" in move.casefold():
         brawl()
-    if "buy" in move.lower():
+    if "buy" in move.casefold():
         buy(gearlist)
-    elif "talk" in move.lower():
+    elif "talk" in move.casefold():
         talk(gearlist)
-    elif "leave" in move.lower():
+    elif "leave" in move.casefold():
         leave()
     else: tavern()
   
